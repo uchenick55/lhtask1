@@ -12,23 +12,69 @@
  @param chislo: number[]
  @return Array<Array<number>>
  */
-function sostavChisla(massivChisel, chislo) {
+function sostavChisla(massivChisel, chislo) { //[8, 2, 3, 4, 6, 7, 1],
     // код писать только внутри данной функции
-    return [[1, 3], [3]];
+    let resultLocal = []; // определение массива результата
+    let massivChisel2 = [];
+    let massivChisel3 = [];
+    let massivChisel4 = [];
+    massivChisel.map(m1 => {
+        if (m1 > chislo) {
+            return
+        } // значение массива больше или равно сумме, пропускаем
+        if (m1 === chislo) {
+            resultLocal.push([m1])
+        } // значение добавляем в итоговый массив
+        massivChisel2.push(m1)
+    })
+    massivChisel2.sort() // сортируем временный массив
+ //   console.log("massivChisel2", massivChisel2)
+    massivChisel3 = massivChisel2.slice() // поолностью копируем массив перед прогоном
+    massivChisel2.map(m2 => { // прогоняем второй массив
+        massivChisel3 = massivChisel3.filter(item => item !== m2) // удаляем записаные числа из проверяемого массива
+        massivChisel3.map(m3 => { // прогоняем третий массив и сравниваем с проверяемым числом
+            if (m2 + m3 === chislo) { // если сумма совпадает
+                // записываем оба числа как массив в итоговый массив resultLocal
+                resultLocal.push([m2, m3])
+                massivChisel3 = massivChisel3.filter(item => item !== m3) // удаляем записаные числа из проверяемого массива
+            }
+/*            if (m2 + m3 < chislo) {
+                massivChisel4 = massivChisel3.filter(item => item !== m2 && item !== m3) // копируем массив3 перед прогоном, в нем уже нет вышестоящих чисел
+                massivChisel4.map(m4 => {
+                        if (m2 + m3 + m4 === chislo) { // если сумма совпадает
+                            // записываем все три числа как массив в итоговый массив resultLocal
+                            resultLocal.push([m2, m3, m4])
+                            massivChisel3 = massivChisel3.filter(item => item !== m2 && item !== m3 && item !== m4) // удаляем записаные числа из проверяемого массива
+                        }
+                    }
+                )
+            }*/
+        })
+    })
+
+
+//Если сумма меньше - запускаем слудующий map
+    //Если сумма равна - добавляем оба числа в итоговый массив resultLocal в виде отдельного массива
+    // Если сумма меньше, полученную сумму
+    // massivChisel2 [ 1, 2, 3, 4, 5, 6, 7, 8 ]
+    console.log("resultLocal", resultLocal)
+//    console.log("massivChisel3", massivChisel3)
+//    console.log("should be", [[1, 3, 4], [1, 2, 5], [3, 5], [2, 6], [1, 7], [8]])
+    return resultLocal;
 }
 
 // console.log(sostavChisla([8, 2, 3, 4, 6, 7, 1], 99));
 
 function compareNumericArrays(arr1, arr2) {
-    if(arr1.length !== arr2.length) {
+    if (arr1.length !== arr2.length) {
         return false;
     }
 
     arr1 = [...arr1].sort();
     arr2 = [...arr2].sort();
 
-    for(let i=0; i<arr1.length; i++) {
-        if(arr1[i] !== arr2[i]) {
+    for (let i = 0; i < arr1.length; i++) {
+        if (arr1[i] !== arr2[i]) {
             return false;
         }
     }
@@ -37,12 +83,12 @@ function compareNumericArrays(arr1, arr2) {
 }
 
 function compareArraysOfNumericArrays(arr1, arr2) {
-    if(arr1.length !== arr2.length) {
+    if (arr1.length !== arr2.length) {
         return false;
     }
 
-    for(let el1 of arr1) {
-        if(arr2.findIndex(el2 => compareNumericArrays(el1, el2)) < 0) {
+    for (let el1 of arr1) {
+        if (arr2.findIndex(el2 => compareNumericArrays(el1, el2)) < 0) {
             return false;
         }
     }
@@ -53,6 +99,7 @@ function compareArraysOfNumericArrays(arr1, arr2) {
 //runTests();
 
 function RunTests() {
+    console.clear()
     const tests = [
         {
             chislo: 5,
@@ -83,12 +130,12 @@ function RunTests() {
     ];
 
     let errors = 0;
-    for(const test of tests) {
+    for (const test of tests) {
         let result;
-        try{
+        try {
             result = sostavChisla(test.massivChisel, test.chislo);
 
-            if(!compareArraysOfNumericArrays(
+            if (!compareArraysOfNumericArrays(
                 result,
                 test.result)
             ) {
@@ -96,13 +143,13 @@ function RunTests() {
                 console.log('--------------------------------------------')
                 console.log("failed for test", test, "Got result", result);
             }
-        } catch(e) {
+        } catch (e) {
             errors++;
             console.log("failed for", test, 'exception', e.message);
         }
     }
 
-    if(errors === 0) {
+    if (errors === 0) {
         console.log('checkStringForBracects test successfuly completed');
     } else {
         console.log(`checkStringForBracects test failed with ${errors} errors`);
