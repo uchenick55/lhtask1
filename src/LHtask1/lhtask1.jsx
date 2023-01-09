@@ -13,11 +13,16 @@
  @return Array<Array<number>>
  */
 function sostavChisla(massivChisel, chislo) { //[8, 2, 3, 4, 6, 7, 1],
+    console.log("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB")
+
     // код писать только внутри данной функции
     let resultLocal = []; // определение массива результата
     let massivChisel2 = [];
     let massivChisel3 = [];
     let massivChisel4 = [];
+    let massivChisel5 = [];
+    let itemForRecord2 = [];
+    let itemForRecord3 = [];
     massivChisel.map(m1 => {
         if (m1 > chislo) {
             return
@@ -28,38 +33,42 @@ function sostavChisla(massivChisel, chislo) { //[8, 2, 3, 4, 6, 7, 1],
         massivChisel2.push(m1)
     })
     massivChisel2.sort() // сортируем временный массив
- //   console.log("massivChisel2", massivChisel2)
     massivChisel3 = massivChisel2.slice() // поолностью копируем массив перед прогоном
     massivChisel2.map(m2 => { // прогоняем второй массив
         massivChisel3 = massivChisel3.filter(item => item !== m2) // удаляем записаные числа из проверяемого массива
         massivChisel3.map(m3 => { // прогоняем третий массив и сравниваем с проверяемым числом
-            if (m2 + m3 === chislo) { // если сумма совпадает
-                // записываем оба числа как массив в итоговый массив resultLocal
-                resultLocal.push([m2, m3])
-                massivChisel3 = massivChisel3.filter(item => item !== m3) // удаляем записаные числа из проверяемого массива
+            if (m2 + m3 === chislo) { // проверка двух слагаемых
+                itemForRecord2 = [m2, m3].sort();
+                let result = resultLocal.find((item, index) => //  проверка повторений
+                    JSON.stringify(item) === JSON.stringify(itemForRecord2));
+                if (!result) { // если данный массив еще не записан в resultLocal
+                    resultLocal.push([m2, m3].sort()) // создаем массив из нужных чисел, сортируем для выявления повторений и добавляем в итоговый массив
+                    console.log("itemForRecord2", itemForRecord2)// вывод того, что добавляем
+                }
             }
-/*            if (m2 + m3 < chislo) {
-                massivChisel4 = massivChisel3.filter(item => item !== m2 && item !== m3) // копируем массив3 перед прогоном, в нем уже нет вышестоящих чисел
+            if (m2 + m3 < chislo) { //если сумма 2 чисел меньше нужного результата
+                massivChisel4 = massivChisel3.filter(item => item !== m3) // копируем массив3 перед прогоном, в нем уже нет вышестоящих чисел
                 massivChisel4.map(m4 => {
-                        if (m2 + m3 + m4 === chislo) { // если сумма совпадает
-                            // записываем все три числа как массив в итоговый массив resultLocal
-                            resultLocal.push([m2, m3, m4])
-                            massivChisel3 = massivChisel3.filter(item => item !== m2 && item !== m3 && item !== m4) // удаляем записаные числа из проверяемого массива
+                        if (m2 + m3 + m4 === chislo) { // проверка трех слегаемых
+                            itemForRecord3 = [m2, m3, m4].sort(); // записываем числа в массив и сортируем (для проверки повторения)
+                            let result = resultLocal.find((item, index) => //  проверка повторений
+                                JSON.stringify(item) === JSON.stringify(itemForRecord3));
+                            if (!result) { // если данный массив еще не записан в resultLocal
+                                resultLocal.push(itemForRecord3)// записываем все три числа как массив в итоговый массив resultLocal
+                                console.log("itemForRecord3", itemForRecord3)
+                            }
                         }
+                        
                     }
                 )
-            }*/
+            }
+
+
         })
     })
 
-
-//Если сумма меньше - запускаем слудующий map
-    //Если сумма равна - добавляем оба числа в итоговый массив resultLocal в виде отдельного массива
-    // Если сумма меньше, полученную сумму
-    // massivChisel2 [ 1, 2, 3, 4, 5, 6, 7, 8 ]
+    console.log("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE")
     console.log("resultLocal", resultLocal)
-//    console.log("massivChisel3", massivChisel3)
-//    console.log("should be", [[1, 3, 4], [1, 2, 5], [3, 5], [2, 6], [1, 7], [8]])
     return resultLocal;
 }
 
