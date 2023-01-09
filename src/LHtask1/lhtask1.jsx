@@ -21,6 +21,7 @@ function sostavChisla(massivChisel, chislo) { //[8, 2, 3, 4, 6, 7, 1],
     let massivChisel3 = []; // прогон массива для проверки 2 слагаемых
     let massivChisel4 = []; // прогон массива для проверки 3 слагаемых
     let massivChisel5 = []; //прогон массива для проверки 4 слагаемых
+    let massivChisel6 = []; //прогон массива для проверки 5 слагаемых
     let itemForRecord = []; // элемент для записи в массив перед проверкой на повторение
     let result = []; // проверка, был ли данный элемент ранее записан в итоговый массив resultLocal
 
@@ -67,13 +68,37 @@ function sostavChisla(massivChisel, chislo) { //[8, 2, 3, 4, 6, 7, 1],
 
                         commonPart1(m2 + m3 + m4 === chislo, [m2, m3, m4]) // проверка 3 слагаемых
 
+                        if (m2 + m3 + m4 < chislo) { //если сумма 3 чисел меньше нужного результата
+                            massivChisel5 = massivChisel4.filter(item => item !== m4) // копируем массив3 перед прогоном, в нем уже нет вышестоящих чисел
+                            massivChisel5.map(m5 => {
+
+                                    commonPart1(m2 + m3 + m4 + m5 === chislo, [m2, m3, m4, m5]) // проверка 3 слагаемых
+
+                                    if (m2 + m3 + m4 + m5 < chislo) { //если сумма 4 чисел меньше нужного результата
+                                        massivChisel6 = massivChisel5.filter(item => item !== m5) // копируем массив3 перед прогоном, в нем уже нет вышестоящих чисел
+                                        massivChisel6.map(m6 => {
+
+                                                commonPart1(m2 + m3 + m4 + m5 + m6 === chislo, [m2, m3, m4, m5, m6]) // проверка 3 слагаемых
+
+                                            }
+                                        )
+                                    }
+
+                                }
+                            )
+                        }
+
+
                     }
                 )
             }
+
+
         })
     })
 
     console.log("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE")
+    resultLocal.sort()
     console.log("resultLocal", resultLocal)
     return resultLocal;
 }
